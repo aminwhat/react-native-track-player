@@ -487,10 +487,11 @@ class MusicModule(reactContext: ReactApplicationContext) : NativeTrackPlayerSpec
 
     override fun getTrack(index: Double, callback: Promise) = launchInScope {
         if (verifyServiceBoundOrReject(callback)) return@launchInScope
-
+    
         val indexInt = index.toInt()
         if (indexInt >= 0 && indexInt < musicService.tracks.size) {
-            callback.resolve(Arguments.fromBundle(musicService.tracks[indexInt].originalItem))
+            val bundle = musicService.tracks[indexInt].originalItem ?: Bundle()
+            callback.resolve(Arguments.fromBundle(bundle))
         } else {
             callback.resolve(null)
         }
